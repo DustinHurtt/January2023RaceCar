@@ -21,6 +21,10 @@ class Obstacle {
 
   }
 
+  newPosition() {
+    this.y++
+  }
+
   draw() {
     ctx.fillStyle = 'brown'
     ctx.fillRect(this.x, this.y, this.width, this.height)
@@ -72,9 +76,16 @@ function updateCanvas() {
   player.draw()
 
   for (let i = 0; i < obstaclesArray.length; i++) {
+    obstaclesArray[i].newPosition()
     obstaclesArray[i].draw()
   }
 
+}
+
+function animationLoop() {
+  let animationId = setInterval(()=>{
+    updateCanvas()
+  }, 16)
 }
 
 function startGame() {
@@ -82,6 +93,7 @@ function startGame() {
   ctx.drawImage(road, 0, 0, 500, 700)
   player.draw()
   createObstacle()
+  animationLoop()
 
 }
 
@@ -109,7 +121,7 @@ window.onload = () => {
         console.log('right', player);
         break;
     }
-    updateCanvas()
+    // updateCanvas()
   });
 
 };
