@@ -11,6 +11,23 @@ car.src = "../images/car.png"
 const startingX = canvas.width/2 - 25
 const startingY = canvas.height - 125
 
+class Obstacle {
+
+  constructor() {
+    this.x = Math.random() * 700;
+    this.y = 0;
+    this.width = 20 + Math.floor(Math.random() * 350);
+    this.height = 20;
+
+  }
+
+  draw() {
+    ctx.fillStyle = 'brown'
+    ctx.fillRect(this.x, this.y, this.width, this.height)
+  }
+
+}
+
 const player = {
 
   x: startingX,
@@ -37,17 +54,35 @@ const player = {
   }
 }
 
+const obstaclesArray = []
+
+function createObstacle() {
+
+  let intervalId = setInterval(()=>{
+    obstaclesArray.push(new Obstacle())
+  }, 2000)
+}
+
 function updateCanvas() {
+
   ctx.clearRect(0,0,500,700)
   
   ctx.drawImage(road, 0, 0, 500, 700)
+
   player.draw()
+
+  for (let i = 0; i < obstaclesArray.length; i++) {
+    obstaclesArray[i].draw()
+  }
+
 }
 
 function startGame() {
-  console.log("STARTING")
+
   ctx.drawImage(road, 0, 0, 500, 700)
   player.draw()
+  createObstacle()
+
 }
 
 window.onload = () => {
