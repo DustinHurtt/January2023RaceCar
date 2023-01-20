@@ -11,6 +11,11 @@ car.src = "../images/car.png"
 const startingX = canvas.width/2 - 25
 const startingY = canvas.height - 125
 
+let intervalId;
+let animationId;
+
+let score = 0
+
 class Obstacle {
 
   constructor() {
@@ -36,9 +41,11 @@ const player = {
 
   x: startingX,
   y: startingY,
+  width: 50,
+  height: 100,
 
   draw: function() {
-    ctx.drawImage(car, this.x, this.y, 50, 100)
+    ctx.drawImage(car, this.x, this.y, this.width, this.height)
   },
 
   moveLeft: function() {
@@ -58,13 +65,31 @@ const player = {
   }
 }
 
+
+function checkCollision (obstacle) {
+
+  if (player.y < obstacle.y + obstacle.height 
+    && obstacle.y < player.y + player.height 
+    && obstacle.x < player.x + player.width 
+    & obstacle.x + obstacle.width > player.x ) {
+      gameOver()
+  }
+
+}
+
 const obstaclesArray = []
 
 function createObstacle() {
-
-  let intervalId = setInterval(()=>{
+  
+  intervalId = setInterval(()=>{
     obstaclesArray.push(new Obstacle())
   }, 2000)
+}
+
+function animationLoop() {
+  animationId = setInterval(()=>{
+    updateCanvas()
+  }, 16)
 }
 
 function updateCanvas() {
@@ -76,17 +101,19 @@ function updateCanvas() {
   player.draw()
 
   for (let i = 0; i < obstaclesArray.length; i++) {
+    if (obstaclesArray[i].y > canvas.height) {
+      obstaclesArray.splice(i, 1)
+      score++
+      console.log("This is the score:", score, obstaclesArray)
+    }
+    checkCollision(obstaclesArray[i])
     obstaclesArray[i].newPosition()
     obstaclesArray[i].draw()
   }
 
+
 }
 
-function animationLoop() {
-  let animationId = setInterval(()=>{
-    updateCanvas()
-  }, 16)
-}
 
 function startGame() {
 
@@ -95,6 +122,14 @@ function startGame() {
   createObstacle()
   animationLoop()
 
+}
+
+function gameOver() {
+  console.log("Game over")
+  clearInterval(animationId)
+  clearInterval(intervalId)
+  obstaclesArray = []
+  
 }
 
 window.onload = () => {
@@ -106,22 +141,18 @@ window.onload = () => {
     switch (e.keyCode) {
       case 38:
         player.moveUp();
-        console.log('up', player);
         break;
       case 40:
         player.moveDown();
-        console.log('down', player);
         break;
       case 37:
         player.moveLeft();
-        console.log('left', player);
         break;
       case 39:
         player.moveRight();
-        console.log('right', player);
         break;
     }
-    // updateCanvas()
+
   });
 
 };
