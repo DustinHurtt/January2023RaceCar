@@ -92,11 +92,22 @@ function animationLoop() {
   }, 16)
 }
 
+function showScore() {
+  ctx.fillStyle = 'black'
+  ctx.fillRect(340, 10, 150, 50)
+
+  ctx.fillStyle = "white"
+  ctx.font = '24px serif'
+  ctx.fillText(`Score: ${score}`, 370, 40)
+}
+
 function updateCanvas() {
 
   ctx.clearRect(0,0,500,700)
   
   ctx.drawImage(road, 0, 0, 500, 700)
+
+  showScore()
 
   player.draw()
 
