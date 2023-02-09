@@ -3,10 +3,10 @@ const ctx = canvas.getContext('2d')
 
 
 const road = new Image()
-road.src = "../images/road.png"
+road.src = "./images/road.png"
 
 const car = new Image()
-car.src = "../images/car.png"
+car.src = "./images/car.png"
 
 const startingX = canvas.width/2 - 25
 const startingY = canvas.height - 125
@@ -69,11 +69,12 @@ const player = {
 
 
 function checkCollision (obstacle) {
+  
 
   if (player.y < obstacle.y + obstacle.height 
     && obstacle.y < player.y + player.height 
     && obstacle.x < player.x + player.width 
-    & obstacle.x + obstacle.width > player.x ) {
+    && obstacle.x + obstacle.width > player.x ) {
       gameOver()
   }
 
