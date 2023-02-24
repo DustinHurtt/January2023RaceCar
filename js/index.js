@@ -128,6 +128,14 @@ function updateCanvas() {
   if (score === 15) {
     gameOver()
   }
+
+  if (player.x + player.width >= canvas.width) {
+    player.x = player.x - 10
+  }
+
+  if (player.x <= 0) {
+    player.x = player.x + 10
+  }
   
 }
 
